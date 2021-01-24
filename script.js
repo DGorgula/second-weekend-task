@@ -139,7 +139,7 @@ function appendCalculatedProperties(dataArray) {
     }
     
 }
-appendCalculatedProperties(SOMETHING);
+
 
 function headers(array, table){
     let style = 'style = "border-left: 1px solid black;"';
@@ -154,44 +154,40 @@ function headers(array, table){
         let header = document.createElement('th');
         header.innerText = property;
         header.style.borderLeft = "1px solid black"
-        // htmlHeaders += `<th ${style}>${property}</th>`;
         row.appendChild(header);
     }
     
-    // console.log("ldfb");
     return row;
 }
 
-function dynamicStyle(property, value){
-    let key = ` background-color: `;
+function addDynamicStyle(DomObj, property, value){
     if (property === 'totalHours') {
+        console.log(DomObj +' '+ property +' '+ value);
         if(value <= 2){
-            return `${key}green;`;
+            console.log(DomObj);
+            DomObj.style.backgroundColor = "green";
         } 
         else if(value > 2 && value <= 5) {
-            return `${key}orange;`;
+            DomObj.style.backgroundColor = 'orange';
         }
         else if(value > 5) {
-            return `${key}red;`;
+            DomObj.style.backgroundColor = 'red';
         }
         
     }
     else if(property === 'tasksDone') {
         if(value <= "50%") {
-            return `${key}lightBlue;`;
-            blue
+            DomObj.style.backgroundColor = "lightBlue";
         }
         else if(value > "50%" && value <= "75%"){
-            return `${key}blue;`;
+            DomObj.style.backgroundColor = "blue";
         }
         else if(value > "75%" ){
-            return `${key}darkSlateBlue;`;
+            DomObj.style.backgroundColor = "darkSlateBlue";
         }
     }
-    // return backgroundColor;
 }
 
-// console.log(addElement(SOMETHING, "tasksGiven", "td"));
 function tableContent(dataArray, tableBody) {
     let row;
     let style = 'style = "border-left: 1px solid black;"';
@@ -200,34 +196,29 @@ function tableContent(dataArray, tableBody) {
         for (item in idk) {
             if (item === "startedAt") {
                 let data = document.createElement('td');
-                console.log(idk[item]);
                 data.innerText = (idk[item]).toTimeString().split(' ')[0];
                 row.appendChild(data);
                 continue;
-                // content += `<td >${(idk[item]).toTimeString().split(' ')[0]}</td>`;
-                // continue;
             }
             else if (item === "finishedAt") {
                 let data = document.createElement('td');
                 data.innerText = idk[item].toTimeString().split(' ')[0];
-                // add style!!!!
+                data.classList.add('leftLine');
                 row.appendChild(data);
                 continue;
             }
             else if(item === 'totalHours' || item === "tasksDone"){
-                const backgroundColor = dynamicStyle(item, idk[item]);
-                console.log(backgroundColor);
-                const dynamicStyleStr = `style = "border-left: 1px solid black; ${backgroundColor}"`;
-                // style.slice(0, -1)+dynamicStyle(item, idk[item]);
                 let data = document.createElement('td');
+                console.log(idk[item]);
+                addDynamicStyle(data, item, idk[item]);
+                data.classList.add('leftLine');
                 data.innerText = idk[item];
-                //      add  dynamic style!!!!
                 row.appendChild(data);
                 continue;
             }
             let data = document.createElement('td');
-                data.innerText = idk[item];
-                // add style!!!!
+            data.innerText = idk[item];
+            data.classList.add('leftLine');
                 row.appendChild(data);
                 continue;
         }
@@ -236,22 +227,21 @@ function tableContent(dataArray, tableBody) {
     return tableBody;
 }
 
-// const tableCSS = 'style = "text-align: center; border-radius: 1rem; margin: 2rem auto; padding: 3rem; border-collapse: collapse; font-size: 1.5rem;"'
-// const divCSS = 'style = "width: 60%; background-color: gray; border-radius: 1rem; padding: 1rem; text-align: center;"'
-// // document.write(tableHeaders);
-// document.write(`<div ${divCSS}><h1 style = "text-align: center;" >Tasks Report</h1><table id="table" ${tableCSS}>`);
 
-// document.write(tableContent(SOMETHING));
-// tableContent += '</table></div>';
-// tableHeaders+
+//      Here the code begins. :)
 
+appendCalculatedProperties(SOMETHING);
 let tblBody = document.createElement('tbody');
+let div = document.createElement('div');
+div.className = "table-div";
 let table = document.createElement('table');
+table.className = "table";
 let headerRow = headers(SOMETHING);
 tblBody.appendChild(headerRow);
 tblBody = tableContent(SOMETHING, tblBody);
 table.appendChild(tblBody);
-document.body.appendChild(table);
+div.appendChild(table);
+document.body.appendChild(div);
 
 
 
